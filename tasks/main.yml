@@ -1,0 +1,17 @@
+---
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install specific terraform release.
+  ansible.builtin.apt:
+    name: "terraform={{ terraform_version }}"
+    state: present
+    update_cache: true
+  when: terraform_version | length > 0
+
+- name: Install latest terraform release.
+  ansible.builtin.apt:
+    name: terraform
+    state: latest
+    update_cache: true
+  when: terraform_version | length == 0
